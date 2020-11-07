@@ -24,3 +24,7 @@ python3 hairar.py # Run super saiyan ar application
 ```
 
 **Note**: In the AR application, open your **mouth** to activate supersaiyan animations.
+
+## Dlib Facial Landmarks
+
+![Screenshot](dlib_facial_landmarks.png)
