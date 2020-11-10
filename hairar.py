@@ -29,7 +29,11 @@ def merge(frame, hair, mask, centre):
   
   x, y = (centre[0] - hcols//2, centre[1] -  hrows//2)
  
-  np.copyto(frame[ y:y+hrows, x:x+hcols ,... ], hair,where=mask[...,np.newaxis]>0)
+  frame_roi = frame[ y:y+hrows, x:x+hcols ,... ]
+
+  # Check bounds and overalay hair
+  if frame_roi.shape == hair.shape:  
+    np.copyto(frame_roi, hair,where=mask[...,np.newaxis]>0)
 
 # Add glow overlay image
 def add_glow(frame, glow, origin):
@@ -38,9 +42,13 @@ def add_glow(frame, glow, origin):
    grows, gcols, _ = glow.shape
    
    x, y = origin
+
+   frame_roi = frame[ y:y+grows, x:x+gcols ,... ]
    
-   glow_roi = cv2.addWeighted(frame[ y:y+grows, x:x+gcols ,... ],1.0, glow,0.95,0)
-   np.copyto(frame[ y:y+grows, x:x+gcols ,... ],glow_roi)
+   # Check bounds and overlay aura glow
+   if frame_roi.shape ==  glow.shape:
+    glow_roi = cv2.addWeighted(frame_roi,1.0, glow,0.95,0)
+    np.copyto(frame_roi, glow_roi)
 
 # Check if mouth is open
 def mouth_open(landmarks):
